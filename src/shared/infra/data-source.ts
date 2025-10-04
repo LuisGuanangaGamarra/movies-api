@@ -1,8 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as path from 'path';
 
-const isCompiled = path.extname(__filename) === '.js';
-
 export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
@@ -11,16 +9,11 @@ export default new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   synchronize: false,
-  logging: ['error'],
-  logger: 'file',
+  logging: true,
+  logger: 'formatted-console',
   entities: [
-    path.join(
-      __dirname,
-      `../../**/**/infra/orm-entities/*${isCompiled ? '.js' : '.ts'}`,
-    ),
+    path.resolve(__dirname, '../../**/infra/orm/*.orm-entity{.ts,.js}'),
   ],
-  migrations: [
-    path.join(__dirname, `./migrations/*${isCompiled ? '.js' : '.ts'}`),
-  ],
+  migrations: [path.join(__dirname, `./migrations/*{.ts,.js}`)],
   migrationsTableName: 'migrations',
 });

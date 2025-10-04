@@ -37,8 +37,7 @@ export class InitSchema1700000001000 implements MigrationInterface {
         email VARCHAR(320) NOT NULL UNIQUE,
         password_hash TEXT NOT NULL,
         role_id INT NOT NULL REFERENCES roles(id) ON DELETE RESTRICT,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-        updated_at TIMESTAMPTZ DEFAULT NULL
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
     `);
 

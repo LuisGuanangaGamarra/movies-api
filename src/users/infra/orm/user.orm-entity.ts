@@ -1,6 +1,13 @@
-import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { RoleOrmEntity } from './role.orm-entity';
 
+@Entity('users')
 export class UserOrmEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -8,10 +15,10 @@ export class UserOrmEntity {
   @Column({ unique: true, length: 320 })
   email: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', name: 'password_hash' })
   passwordHash: string;
 
-  @ManyToOne(() => RoleOrmEntity, { lazy: true })
+  @ManyToOne(() => RoleOrmEntity, { eager: true })
   @JoinColumn({ name: 'role_id' })
   role: RoleOrmEntity;
 }

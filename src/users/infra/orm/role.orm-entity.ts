@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { PermissionOrmEntity } from './permission.orm-entity';
+import { UserOrmEntity } from './user.orm-entity';
 
 @Entity('roles')
 export class RoleOrmEntity {
@@ -15,7 +17,7 @@ export class RoleOrmEntity {
   @Column({ unique: true })
   name: string;
 
-  @ManyToMany(() => PermissionOrmEntity, { lazy: true })
+  @ManyToMany(() => PermissionOrmEntity, { eager: true })
   @JoinTable({
     name: 'role_permissions',
     joinColumn: { name: 'role_id', referencedColumnName: 'id' },

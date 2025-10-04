@@ -1,7 +1,7 @@
 import { UserEntity } from '../domain/user.entity';
 
 export interface IUserRepository {
-  save(user: UserEntity): Promise<void>;
+  save(user: Omit<UserEntity, 'id'>): Promise<void>;
   findById(id: number): Promise<UserEntity | null>;
   findByEmail(email: string): Promise<UserEntity | null>;
 }

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { RoleOrmEntity } from '../orm/role.orm-entity';
 import { UserEntity } from '../../domain/user.entity';
 import { UserMapper } from '../mappers/user.mapper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserTypeOrmRepository implements IUserRepository {
@@ -17,25 +17,35 @@ export class UserTypeOrmRepository implements IUserRepository {
   ) {}
 
   async findByEmail(email: string): Promise<UserEntity | null> {
-    const entity = await this.userRepository.findOne({ where: { email } });
+    const entity = await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('role.permissions', 'permissions')
+      .where('user.email = :email', { email })
+      .getOne();
     return entity ? UserMapper.mapToDomain(entity) : null;
   }
 
   async findById(id: number): Promise<UserEntity | null> {
-    const entity = await this.userRepository.findOne({ where: { id } });
+    const entity = await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('role.permissions', 'permissions')
+      .where('user.id = :id', { id })
+      .getOne();
     return entity ? UserMapper.mapToDomain(entity) : null;
   }
 
-  async save(user: UserEntity): Promise<void> {
+  async save(user: Omit<UserEntity, 'id'>): Promise<void> {
     const role = await this.roleRepository.findOne({
       where: { name: user.role.name },
     });
-    if (!role) throw new BadRequestException(`Rol ${user.role.name} no existe`);
 
     const entity = this.userRepository.create({
       ...user,
-      role,
+      role: role!,
     });
+
     await this.userRepository.save(entity);
   }
 }
