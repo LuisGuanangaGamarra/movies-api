@@ -9,8 +9,8 @@ export default new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   synchronize: false,
-  logging: true,
-  logger: 'formatted-console',
+  logging: ['error'],
+  logger: 'file',
   entities: [
     path.resolve(__dirname, '../../**/infra/orm/*.orm-entity{.ts,.js}'),
   ],

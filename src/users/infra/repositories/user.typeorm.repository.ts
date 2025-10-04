@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../application/user.repository';
+import { IUserRepository } from '../../domain/repositories/user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserOrmEntity } from '../orm/user.orm-entity';
 import { Repository } from 'typeorm';
@@ -36,7 +36,7 @@ export class UserTypeOrmRepository implements IUserRepository {
     return entity ? UserMapper.mapToDomain(entity) : null;
   }
 
-  async save(user: Omit<UserEntity, 'id'>): Promise<void> {
+  async save(user: UserEntity | Omit<UserEntity, 'id'>): Promise<void> {
     const role = await this.roleRepository.findOne({
       where: { name: user.role.name },
     });

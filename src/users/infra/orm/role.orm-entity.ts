@@ -4,10 +4,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
-  OneToMany,
 } from 'typeorm';
 import { PermissionOrmEntity } from './permission.orm-entity';
-import { UserOrmEntity } from './user.orm-entity';
 
 @Entity('roles')
 export class RoleOrmEntity {

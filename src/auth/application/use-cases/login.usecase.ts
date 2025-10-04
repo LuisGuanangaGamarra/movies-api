@@ -4,11 +4,12 @@ import * as bcrypt from 'bcrypt';
 import {
   type IUserRepository,
   USER_REPOSITORY,
-} from '../../../users/application/user.repository';
+} from '../../../users/domain/repositories/user.repository';
 
 import { JwtService } from '@nestjs/jwt';
-import { LoginInput } from './types';
-import { type LoginDtoResponse } from '../../dtos/auth.dto';
+import { LoginInputDTO } from './dtos/dtos';
+import { type LoginOutputDTO } from './dtos/dtos';
+import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
 
 @Injectable()
 export class LoginUseCase {
@@ -18,16 +19,27 @@ export class LoginUseCase {
     private readonly jwtService: JwtService,
   ) {}
 
-  async execute({ email, password }: LoginInput): Promise<LoginDtoResponse> {
+  async execute({ email, password }: LoginInputDTO): Promise<LoginOutputDTO> {
     const user = await this.userRepository.findByEmail(email);
-    if (!user) throw new BadRequestException('Usuario no encontrado');
+    if (!user)
+      throw new DomainException('USER_NOT_FOUND', 'Usuario no encontrado', {
+        email,
+      });
 
     const isEqual = await bcrypt.compare(password, user.passwordHash);
-    if (!isEqual) throw new BadRequestException('email o password incorrectos');
+    if (!isEqual)
+      throw new DomainException(
+        'INVALID_CREDENTIALS',
+        'email o password invalido',
+        {
+          email,
+          password,
+        },
+      );
 
     const payload = { sub: user.id, email: user.email, role: user.role.name };
     const jwt = await this.jwtService.signAsync(payload);
-    const response: LoginDtoResponse = {
+    const response: LoginOutputDTO = {
       token: jwt,
     };
 

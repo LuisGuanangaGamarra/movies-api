@@ -1,4 +1,4 @@
-import { RoleEntity } from '../domain/role.entity';
+import { RoleEntity } from '../role.entity';
 
 export interface IRoleRepository {
   findByName(name: string): Promise<RoleEntity | null>;

@@ -1,15 +1,16 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { RegisterInput } from './types';
+import * as bcrypt from 'bcrypt';
+
+import { RegisterInputDTO } from './dtos/dtos';
 import {
   type IUserRepository,
   USER_REPOSITORY,
-} from '../../../users/application/user.repository';
+} from '../../../users/domain/repositories/user.repository';
 import {
   type IRoleRepository,
   ROLE_REPOSITORY,
-} from '../../../users/application/role.repository';
-
-import * as bcrypt from 'bcrypt';
+} from '../../../users/domain/repositories/role.repository';
+import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
 
 @Injectable()
 export class RegisterUserUseCase {
@@ -19,13 +20,16 @@ export class RegisterUserUseCase {
     @Inject(ROLE_REPOSITORY)
     private readonly roleRepository: IRoleRepository,
   ) {}
-  async execute(input: RegisterInput) {
+  async execute(input: RegisterInputDTO) {
     const { email, password, role } = input;
     const user = await this.userRepository.findByEmail(email);
-    if (user) throw new BadRequestException('El usuario ya existe');
+    if (user)
+      throw new DomainException('USER_ALREADY_EXISTS', 'email ya registrado', {
+        email,
+      });
 
     const rol = await this.roleRepository.findByName(role);
-    if (!role) throw new BadRequestException('El rol no existe');
+    if (!role) throw new DomainException('ROLE_NOT_FOUND', 'rol no encontrado');
 
     const hash = await bcrypt.hash(password, 12);
 

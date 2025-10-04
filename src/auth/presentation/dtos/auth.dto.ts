@@ -1,6 +1,6 @@
 import { IsEmail, IsString, MaxLength } from 'class-validator';
 
-export class AuthDtoRequest {
+export class AuthDto {
   @IsEmail()
   email: string;
 
@@ -9,6 +9,6 @@ export class AuthDtoRequest {
   password: string;
 }
 
-export type LoginDtoResponse = {
+export class AuthResponseDto {
   token: string;
-};
+}
