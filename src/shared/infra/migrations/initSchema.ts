@@ -45,13 +45,33 @@ export class InitSchema1700000001000 implements MigrationInterface {
       CREATE TABLE movies (
         id SERIAL PRIMARY KEY,
         title VARCHAR(200) NOT NULL,
-        director VARCHAR(120),
-        release_date DATE,
-        synopsis TEXT,
+        director VARCHAR(200) NOT NULL,
+        release_date DATE NOT NULL,
+        synopsis TEXT NOT NULL,
         external_id VARCHAR(100) DEFAULT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
         updated_at TIMESTAMPTZ DEFAULT NULL
       );
+    `);
+
+    await qr.query(`
+      ALTER TABLE "movies"
+        ADD CONSTRAINT "UQ_movies_external_id" UNIQUE ("external_id");
+    `);
+
+    await qr.query(`
+      CREATE OR REPLACE FUNCTION update_updated_at_column()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        NEW.updated_at = NOW(); -- actualiza el campo antes de guardar
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+
+      CREATE TRIGGER set_updated_at_trigger
+      BEFORE UPDATE ON movies
+      FOR EACH ROW
+      EXECUTE FUNCTION update_updated_at_column();
     `);
 
     await qr.query(`INSERT INTO roles (name) VALUES ('ADMIN'), ('REGULAR');`);
@@ -80,6 +100,14 @@ export class InitSchema1700000001000 implements MigrationInterface {
   }
 
   public async down(qr: QueryRunner): Promise<void> {
+    await qr.query(`
+      ALTER TABLE "movies" DROP CONSTRAINT IF EXISTS "UQ_movies_external_id";
+    `);
+    await qr.query(`
+      DROP TRIGGER IF EXISTS set_updated_at_trigger ON movies;
+      DROP FUNCTION IF EXISTS update_updated_at_column;
+    `);
+
     await qr.query(`DROP TABLE IF EXISTS movies;`);
     await qr.query(`DROP TABLE IF EXISTS users;`);
     await qr.query(`DROP TABLE IF EXISTS role_permissions;`);
