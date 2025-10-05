@@ -7,6 +7,8 @@ import { ROLE_REPOSITORY } from './domain/repositories/role.repository';
 import { RoleTypeormRepository } from './infra/repositories/role.typeorm.repository';
 import { USER_REPOSITORY } from './domain/repositories/user.repository';
 import { UserTypeOrmRepository } from './infra/repositories/user.typeorm.repository';
+import { RegisterUserUseCase } from './aplication/use-cases/register-user.usecase';
+import { UsersController } from './presentation/users.controller';
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { UserTypeOrmRepository } from './infra/repositories/user.typeorm.reposit
       provide: USER_REPOSITORY,
       useClass: UserTypeOrmRepository,
     },
+    RegisterUserUseCase,
   ],
+  controllers: [UsersController],
   exports: [ROLE_REPOSITORY, USER_REPOSITORY],
 })
 export class UsersModule {}

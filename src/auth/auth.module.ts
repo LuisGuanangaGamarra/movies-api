@@ -3,7 +3,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './presentation/auth.controller';
 import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { UsersModule } from '../users/users.module';
-import { RegisterUserUseCase } from './application/use-cases/register-user.usecase';
 import { LoginUseCase } from './application/use-cases/login.usecase';
 import { ConfigService } from '@nestjs/config';
 
@@ -25,6 +24,6 @@ import { ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [JwtStrategy, RegisterUserUseCase, LoginUseCase],
+  providers: [JwtStrategy, LoginUseCase],
 })
 export class AuthModule {}

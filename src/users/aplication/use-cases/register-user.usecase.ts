@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { RegisterInputDTO } from './dtos/dtos';
+import { RegisterUserInputDTO } from '../dtos/register-user-input.dto';
 import {
   type IUserRepository,
   USER_REPOSITORY,
-} from '../../../users/domain/repositories/user.repository';
+} from '../../domain/repositories/user.repository';
 import {
   type IRoleRepository,
   ROLE_REPOSITORY,
-} from '../../../users/domain/repositories/role.repository';
+} from '../../domain/repositories/role.repository';
 import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class RegisterUserUseCase {
     @Inject(ROLE_REPOSITORY)
     private readonly roleRepository: IRoleRepository,
   ) {}
-  async execute(input: RegisterInputDTO) {
+  async execute(input: RegisterUserInputDTO) {
     const { email, password, role } = input;
     const user = await this.userRepository.findByEmail(email);
     if (user)

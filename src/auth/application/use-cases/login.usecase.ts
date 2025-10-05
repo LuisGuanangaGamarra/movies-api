@@ -7,8 +7,8 @@ import {
 } from '../../../users/domain/repositories/user.repository';
 
 import { JwtService } from '@nestjs/jwt';
-import { LoginInputDTO } from './dtos/dtos';
-import { type LoginOutputDTO } from './dtos/dtos';
+import { LoginInputDTO } from '../dtos/dtos';
+import { type LoginOutputDTO } from '../dtos/dtos';
 import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
 
 @Injectable()

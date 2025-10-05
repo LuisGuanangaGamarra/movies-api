@@ -1,27 +1,14 @@
 import { AuthRequestDto } from '../dtos/auth-request.dto';
 import { AuthResponseDto } from '../dtos/auth-response.dto';
 
-import {
-  LoginInputDTO,
-  LoginOutputDTO,
-  RegisterInputDTO,
-  Role,
-} from '../../application/use-cases/dtos/dtos';
+import { LoginInputDTO, LoginOutputDTO } from '../../application/dtos/dtos';
 
 export class AuthHttpMapper {
-  static toApplication<
-    T extends AuthRequestDto,
-    V extends LoginInputDTO | RegisterInputDTO,
-  >(input: T, role?: Role): V {
-    const map: V = {
+  static toApplication(input: AuthRequestDto): LoginInputDTO {
+    const map: LoginInputDTO = {
       email: input.email,
       password: input.password,
-    } as V;
-
-    if (role) {
-      (map as RegisterInputDTO).role = role;
-    }
-
+    };
     return map;
   }
 
