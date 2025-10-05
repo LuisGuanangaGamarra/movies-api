@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
 import {
@@ -39,10 +39,9 @@ export class LoginUseCase {
 
     const payload = { sub: user.id, email: user.email, role: user.role.name };
     const jwt = await this.jwtService.signAsync(payload);
-    const response: LoginOutputDTO = {
+
+    return {
       token: jwt,
     };
-
-    return response;
   }
 }

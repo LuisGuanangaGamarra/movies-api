@@ -1,4 +1,6 @@
-import { AuthDto, AuthResponseDto } from '../dtos/auth.dto';
+import { AuthRequestDto } from '../dtos/auth-request.dto';
+import { AuthResponseDto } from '../dtos/auth-response.dto';
+
 import {
   LoginInputDTO,
   LoginOutputDTO,
@@ -8,7 +10,7 @@ import {
 
 export class AuthHttpMapper {
   static toApplication<
-    T extends AuthDto,
+    T extends AuthRequestDto,
     V extends LoginInputDTO | RegisterInputDTO,
   >(input: T, role?: Role): V {
     const map: V = {
