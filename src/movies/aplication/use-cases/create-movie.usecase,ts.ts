@@ -9,6 +9,7 @@ import {
   type IMoviesMapper,
   MOVIES_MAPPER,
 } from '../../domain/interfaces/movies.mapper';
+import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
 
 @Injectable()
 export class CreateMovieUseCase {
@@ -21,6 +22,12 @@ export class CreateMovieUseCase {
 
   async execute(input: MovieInputDto) {
     const domainMovie = this.mapper.fromInputToDomain(input);
+    const movie = await this.repo.findByTitle(domainMovie.title);
+    if (movie)
+      throw new DomainException(
+        'MOVIE_TITLE_ALREADY_EXISTS',
+        'Pelicula con ese nombre ya se encuentra registrada',
+      );
     await this.repo.save(domainMovie);
   }
 }
