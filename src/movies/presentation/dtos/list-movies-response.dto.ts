@@ -1,17 +1,17 @@
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { MovieDTO } from './movie.dto';
+import { MovieResponseDto } from './movie-response.dto';
 
 export class ListMoviesResponseDto {
   @ApiProperty({
-    type: MovieDTO,
+    type: MovieResponseDto,
     description: 'Lista de peliculas',
     isArray: true,
     required: true,
   })
   @Expose()
-  @Type(() => MovieDTO)
-  movies: MovieDTO[];
+  @Type(() => MovieResponseDto)
+  movies: MovieResponseDto[];
 
   @ApiProperty({
     type: Number,

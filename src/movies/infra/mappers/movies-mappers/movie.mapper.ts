@@ -18,7 +18,7 @@ import { Movie } from '../../../domain/movie.entity';
 import { ListMoviesResponseDto } from '../../../presentation/dtos/list-movies-response.dto';
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { SawpiResponseDTO } from '../../swapi/types';
-import { MovieDTO } from '../../../presentation/dtos/movie.dto';
+import { MovieResponseDto } from '../../../presentation/dtos/movie-response.dto';
 import { MovieInputDto } from '../../../aplication/use-cases/dtos/movie-input.dto';
 import { MovieRequestCreateDto } from '../../../presentation/dtos/movie-request-create.dto';
 import { MovieRequestUpdateDto } from '../../../presentation/dtos/movie-request-update.dto';
@@ -63,7 +63,7 @@ export class MovieMapper implements IMoviesMapper {
     return morphism(this.fromExternalToDomainSchema, data.result, Movie);
   }
 
-  toMovieResponse(data: Movie): MovieDTO {
+  toMovieResponse(data: Movie): MovieResponseDto {
     return morphism(this.toMovieResponseSchema, data);
   }
 

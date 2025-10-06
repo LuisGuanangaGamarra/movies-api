@@ -8,7 +8,7 @@ import { Movie } from '../movie.entity';
 import { ListMoviesResponseDto } from '../../presentation/dtos/list-movies-response.dto';
 import { MovieOrmEntity } from '../../infra/orm/movie.orm-entity';
 import { SawpiResponseDTO } from '../../infra/swapi/types';
-import { MovieDTO } from '../../presentation/dtos/movie.dto';
+import { MovieResponseDto } from '../../presentation/dtos/movie-response.dto';
 import { MovieInputDto } from '../../aplication/use-cases/dtos/movie-input.dto';
 import { MovieRequestCreateDto } from '../../presentation/dtos/movie-request-create.dto';
 import { MovieRequestUpdateDto } from '../../presentation/dtos/movie-request-update.dto';
@@ -23,7 +23,7 @@ export interface IMoviesMapper {
   ): MovieOrmEntity;
   toListOrm(data: Omit<Movie, 'id'>[] | Movie[]): MovieOrmEntity[];
   fromExternalToDomain(data: SawpiResponseDTO): Movie[];
-  toMovieResponse(data: Movie): MovieDTO;
+  toMovieResponse(data: Movie): MovieResponseDto;
   fromRequestCreateToMovieInput(data: MovieRequestCreateDto): MovieInputDto;
   fromRequestUpdateToMovieInput(data: MovieRequestUpdateDto): MovieInputDto;
   fromInputToDomain(data: MovieInputDto): Movie;

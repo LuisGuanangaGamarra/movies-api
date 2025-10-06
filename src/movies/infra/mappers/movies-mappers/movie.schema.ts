@@ -3,15 +3,15 @@ import { ListUserRequestDto } from '../../../presentation/dtos/list-user-request
 import { PaginatedResult, type PaginationParams } from '../../../types';
 import { ListMoviesResponseDto } from '../../../presentation/dtos/list-movies-response.dto';
 import { Movie } from '../../../domain/movie.entity';
-import { MovieDTO } from '../../../presentation/dtos/movie.dto';
+import { MovieResponseDto } from '../../../presentation/dtos/movie-response.dto';
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { Result } from '../../swapi/types';
 import { MovieInputDto } from '../../../aplication/use-cases/dtos/movie-input.dto';
 import { MovieRequestCreateDto } from '../../../presentation/dtos/movie-request-create.dto';
 import { MovieRequestUpdateDto } from '../../../presentation/dtos/movie-request-update.dto';
 
-const mapMovies = (movies: Movie[]): MovieDTO[] =>
-  movies.map<MovieDTO>((movie) => ({
+const mapMovies = (movies: Movie[]): MovieResponseDto[] =>
+  movies.map<MovieResponseDto>((movie) => ({
     id: movie.id,
     title: movie.title,
     director: movie.director,
@@ -55,7 +55,7 @@ export const swapiToMovieSchema: Schema<Omit<Movie, 'id'>, Result> = {
   externalId: (src) => src._id ?? null,
 };
 
-export const movieToMovieResponse: Schema<MovieDTO, Movie> = {
+export const movieToMovieResponse: Schema<MovieResponseDto, Movie> = {
   id: 'id',
   title: 'title',
   director: 'director',

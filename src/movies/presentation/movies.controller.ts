@@ -24,7 +24,7 @@ import {
 import { ListMoviesUseCase } from '../aplication/use-cases/list-movies.usecase';
 import { ListMoviesResponseDto } from './dtos/list-movies-response.dto';
 import { GetMovieUseCase } from '../aplication/use-cases/get-movie.usecase';
-import { MovieDTO } from './dtos/movie.dto';
+import { MovieResponseDto } from './dtos/movie-response.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -94,7 +94,7 @@ export class MoviesController {
 
   @ApiOkResponse({
     description: 'Pelicula encontrada',
-    type: MovieDTO,
+    type: MovieResponseDto,
   })
   @ApiBadRequestResponse({
     description: 'Errores de negocio o validación',
@@ -103,7 +103,7 @@ export class MoviesController {
   @ApiBearerAuth('access-token')
   @Permission('MOVIE_READ')
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  @SerializeOptions({ type: MovieDTO })
+  @SerializeOptions({ type: MovieResponseDto })
   @Get(':id')
   async getMovieById(@Param('id') id: number) {
     const movie = await this.getMovieUC.execute(id);
@@ -138,13 +138,6 @@ export class MoviesController {
     await this.updateMovieUC.execute(input);
   }
 
-  @ApiQuery({
-    name: 'id',
-    required: true,
-    type: Number,
-    example: 1,
-    description: 'Id de la pelicula',
-  })
   @ApiOkResponse({ description: 'Pelicula eliminada exitosamente' })
   @ApiBadRequestResponse({
     description: 'Errores de negocio o validación',
