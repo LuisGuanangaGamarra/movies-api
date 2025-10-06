@@ -11,7 +11,7 @@ import { MoviesController } from './presentation/movies.controller';
 import { MOVIES_MAPPER } from './domain/interfaces/movies.mapper';
 import { MovieMapper } from './infra/mappers/movies-mappers/movie.mapper';
 import { GetMovieUseCase } from './aplication/use-cases/get-movie.usecase';
-import { CreateMovieUseCase } from './aplication/use-cases/create-movie.usecase,ts';
+import { CreateMovieUseCase } from './aplication/use-cases/create-movie.usecase';
 import { UpdateMovieUsecase } from './aplication/use-cases/update-movie.usecase';
 import { DeleteMovieUseCase } from './aplication/use-cases/delete-movie.usecase';
 

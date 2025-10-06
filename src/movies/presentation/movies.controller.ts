@@ -37,7 +37,7 @@ import { Permission } from '../../shared/presentation/permission.decorator';
 import { JwtAuthGuard } from '../../auth/infrastructure/jwt-auth.guard';
 import { PermissionGuard } from '../../shared/presentation/permission.guard';
 import { ErrorDomainResponseDto } from '../../shared/presentation/dtos/error-domain-response.dto';
-import { CreateMovieUseCase } from '../aplication/use-cases/create-movie.usecase,ts';
+import { CreateMovieUseCase } from '../aplication/use-cases/create-movie.usecase';
 import { MovieRequestCreateDto } from './dtos/movie-request-create.dto';
 import { UpdateMovieUsecase } from '../aplication/use-cases/update-movie.usecase';
 import { MovieRequestUpdateDto } from './dtos/movie-request-update.dto';
