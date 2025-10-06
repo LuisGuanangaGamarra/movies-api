@@ -3,7 +3,10 @@ import {
   type IMovieRepository,
   MOVIE_REPOSITORY,
 } from '../../domain/repositories/movie.repository';
-import { SWAPI_CLIENT, type ISwapiClient } from '../../infra/swapi/swapi.interface';
+import {
+  SWAPI_CLIENT,
+  type ISwapiClient,
+} from '../../infra/swapi/swapi.interface';
 import {
   type IMoviesMapper,
   MOVIES_MAPPER,
