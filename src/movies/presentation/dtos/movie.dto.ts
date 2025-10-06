@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class MovieDto {
+export class MovieDTO {
   @ApiProperty({
     type: Number,
     example: 1,

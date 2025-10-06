@@ -1,14 +1,14 @@
 import { Schema } from 'morphism';
 import { ListUserRequestDto } from '../../../presentation/dtos/list-user-request.dto';
 import { PaginatedResult, type PaginationParams } from '../../../types';
-import { ListUsersResponseDto } from '../../../presentation/dtos/list-users-response.dto';
+import { ListMoviesResponseDto } from '../../../presentation/dtos/list-movies-response.dto';
 import { Movie } from '../../../domain/movie.entity';
-import { MovieDto } from '../../../presentation/dtos/movie.dto';
+import { MovieDTO } from '../../../presentation/dtos/movie.dto';
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { Result } from '../../swapi/types';
 
-const mapMovies = (movies: Movie[]): MovieDto[] =>
-  movies.map<MovieDto>((movie) => ({
+const mapMovies = (movies: Movie[]): MovieDTO[] =>
+  movies.map<MovieDTO>((movie) => ({
     id: movie.id,
     title: movie.title,
     director: movie.director,
@@ -25,10 +25,10 @@ export const movieRequestDTOToInput: Schema<
 };
 
 export const movieOutputToResponse: Schema<
-  ListUsersResponseDto,
+  ListMoviesResponseDto,
   PaginatedResult<Movie>
 > = {
-  movies: (iteratee) => {
+  movies: (iteratee: PaginatedResult<Movie>) => {
     return mapMovies(iteratee.data);
   },
   total: 'total',
@@ -50,4 +50,12 @@ export const swapiToMovieSchema: Schema<Omit<Movie, 'id'>, Result> = {
   releaseDate: (src) => new Date(src.properties.release_date),
   synopsis: (src) => src.properties.opening_crawl?.replace(/\r\n/g, '') ?? '',
   externalId: (src) => src._id ?? null,
+};
+
+export const movieToMovieResponse: Schema<MovieDTO, Movie> = {
+  id: 'id',
+  title: 'title',
+  director: 'director',
+  releaseDate: 'releaseDate',
+  synopsis: 'synopsis',
 };

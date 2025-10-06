@@ -87,7 +87,7 @@ export class InitSchema1700000001000 implements MigrationInterface {
     `);
 
     await qr.query(`INSERT INTO role_permissions (role_id, permission_id)
-      SELECT 1, id FROM permissions;`);
+      SELECT 1, id FROM permissions WHERE name NOT IN ('MOVIE_READ');`);
 
     await qr.query(`INSERT INTO role_permissions (role_id, permission_id)
       SELECT 2, id FROM permissions WHERE name IN ('MOVIE_READ');`);

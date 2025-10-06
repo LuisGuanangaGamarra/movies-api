@@ -7,13 +7,15 @@ import {
   movieOrmEntityToDomain,
   movieOutputToResponse,
   movieRequestDTOToInput,
+  movieToMovieResponse,
   swapiToMovieSchema,
 } from './movie.schema';
 import { morphism } from 'morphism';
 import { Movie } from '../../../domain/movie.entity';
-import { ListUsersResponseDto } from '../../../presentation/dtos/list-users-response.dto';
+import { ListMoviesResponseDto } from '../../../presentation/dtos/list-movies-response.dto';
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { SawpiResponseDTO } from '../../swapi/types';
+import { MovieDTO } from '../../../presentation/dtos/movie.dto';
 
 @Injectable()
 export class MovieMapper implements IMoviesMapper {
@@ -22,12 +24,13 @@ export class MovieMapper implements IMoviesMapper {
   private readonly toDomainSchema = movieEntityToDomain;
   private readonly toOrmSchema = movieOrmEntityToDomain;
   private readonly fromExternalToDomainSchema = swapiToMovieSchema;
+  private readonly toMovieResponseSchema = movieToMovieResponse;
 
   toInput(params: ListUserRequestDto): PaginationParams {
     return morphism(this.requestToInputSchema, params);
   }
 
-  toOutput(data: PaginatedResult<Movie>): ListUsersResponseDto {
+  toOutput(data: PaginatedResult<Movie>): ListMoviesResponseDto {
     return morphism(this.outputToResponseSchema, data);
   }
 
@@ -49,5 +52,9 @@ export class MovieMapper implements IMoviesMapper {
 
   fromExternalToDomain(data: SawpiResponseDTO): Movie[] {
     return morphism(this.fromExternalToDomainSchema, data.result, Movie);
+  }
+
+  toMovieResponse(data: Movie): MovieDTO {
+    return morphism(this.toMovieResponseSchema, data);
   }
 }

@@ -10,6 +10,7 @@ import { ListMoviesUseCase } from './aplication/use-cases/list-movies.usecase';
 import { MoviesController } from './presentation/movies.controller';
 import { MOVIES_MAPPER } from './domain/interfaces/movies.mapper';
 import { MovieMapper } from './infra/mappers/movies-mappers/movie.mapper';
+import { GetMovieUseCase } from './aplication/use-cases/get-movie.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MovieOrmEntity])],
@@ -28,6 +29,7 @@ import { MovieMapper } from './infra/mappers/movies-mappers/movie.mapper';
     },
     SyncStarWarsMoviesUseCase,
     ListMoviesUseCase,
+    GetMovieUseCase,
   ],
   controllers: [MoviesController],
 })
