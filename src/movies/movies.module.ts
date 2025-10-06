@@ -3,10 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieOrmEntity } from './infra/orm/movie.orm-entity';
 import { MOVIE_REPOSITORY } from './domain/repositories/movie.repository';
 import { MovieTypeOrmRepository } from './infra/repositories/movie.typeorm.repository';
-import { SWAPI_CLIENT } from './infra/swapi/swapi';
+import { SWAPI_CLIENT } from './infra/swapi/swapi.interface';
 import { SwapiClient } from './infra/swapi/swapi.client';
 import { SyncStarWarsMoviesUseCase } from './aplication/use-cases/sync-sw-movies.usecase';
+import { ListMoviesUseCase } from './aplication/use-cases/list-movies.usecase';
 import { MoviesController } from './presentation/movies.controller';
+import { MOVIES_MAPPER } from './domain/interfaces/movies.mapper';
+import { MovieMapper } from './infra/mappers/movies-mappers/movie.mapper';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MovieOrmEntity])],
@@ -19,7 +22,12 @@ import { MoviesController } from './presentation/movies.controller';
       provide: SWAPI_CLIENT,
       useClass: SwapiClient,
     },
+    {
+      provide: MOVIES_MAPPER,
+      useClass: MovieMapper,
+    },
     SyncStarWarsMoviesUseCase,
+    ListMoviesUseCase,
   ],
   controllers: [MoviesController],
 })

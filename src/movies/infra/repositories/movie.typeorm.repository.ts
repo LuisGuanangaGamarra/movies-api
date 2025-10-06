@@ -3,38 +3,45 @@ import { Repository } from 'typeorm';
 import { IMovieRepository } from '../../domain/repositories/movie.repository';
 import { Movie } from '../../domain/movie.entity';
 import { MovieOrmEntity } from '../orm/movie.orm-entity';
-import { MovieMapper } from '../mappers/movie.mappers';
-import { PaginatedResult, PaginationParams } from '../../types';
-import { Injectable } from '@nestjs/common';
+import { PaginatedResult, PaginationParams, PartialExcept } from '../../types';
+import { Injectable, Inject } from '@nestjs/common';
+import {
+  type IMoviesMapper,
+  MOVIES_MAPPER,
+} from '../../domain/interfaces/movies.mapper';
 
 @Injectable()
 export class MovieTypeOrmRepository implements IMovieRepository {
   constructor(
     @InjectRepository(MovieOrmEntity)
     private readonly repo: Repository<MovieOrmEntity>,
+    @Inject(MOVIES_MAPPER)
+    private readonly movieMapper: IMoviesMapper,
   ) {}
 
   async findAll(params?: PaginationParams): Promise<PaginatedResult<Movie>> {
     const { page, limit } = params || {};
 
     if (!page || !limit) {
-      const rows = await this.repo.find();
-      const rowsMapped = rows.map((row) => MovieMapper.toDomain(row));
+      const [rows, total] = await this.repo.findAndCount();
+      const rowsMapped = this.movieMapper.toListDomain(rows);
 
       return {
         data: rowsMapped,
-        total: rowsMapped.length,
-      };
+        total: total,
+      } as PaginatedResult<Movie>;
     }
 
     const skip = (page - 1) * limit;
-    const [data, total] = await this.repo.findAndCount({
+    const [rows, total] = await this.repo.findAndCount({
       skip,
       take: limit,
     });
 
+    const rowsMapped = this.movieMapper.toListDomain(rows);
+
     return {
-      data: data.map((row) => MovieMapper.toDomain(row)),
+      data: rowsMapped,
       total,
       page,
       limit,
@@ -44,16 +51,16 @@ export class MovieTypeOrmRepository implements IMovieRepository {
 
   async findById(id: number): Promise<Movie | null> {
     const row = await this.repo.findOne({ where: { id } });
-    return row ? MovieMapper.toDomain(row) : null;
+    return row ? this.movieMapper.toDomain(row) : null;
   }
 
   async findByTitle(title: string): Promise<Movie | null> {
     const row = await this.repo.findOne({ where: { title } });
-    return row ? MovieMapper.toDomain(row) : null;
+    return row ? this.movieMapper.toDomain(row) : null;
   }
 
   async save(movie: Movie | Omit<Movie, 'id'>): Promise<void> {
-    const movieEntity = MovieMapper.toOrmWithOutId(movie);
+    const movieEntity = this.movieMapper.toOrm(movie);
 
     if ('id' in movie) {
       movieEntity.id = movie.id;
@@ -70,8 +77,17 @@ export class MovieTypeOrmRepository implements IMovieRepository {
     await this.repo.delete(id);
   }
 
-  async upsertByExternalId(movies: Omit<Movie, 'id'>[]): Promise<void> {
-    const entities = movies.map((movie) => MovieMapper.toOrmWithOutId(movie));
+  async upsertByExternalId(movies: Movie[]): Promise<void> {
+    const entities = this.movieMapper.toListOrm(movies);
     await this.repo.upsert(entities, ['externalId']);
+  }
+
+  async update(movie: PartialExcept<Movie, 'id'>): Promise<void> {
+    const movieEntity = this.movieMapper.toOrm(movie);
+    const entity = this.repo.create({
+      ...movieEntity,
+    });
+
+    await this.repo.save(entity);
   }
 }

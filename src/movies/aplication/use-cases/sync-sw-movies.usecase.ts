@@ -3,8 +3,11 @@ import {
   type IMovieRepository,
   MOVIE_REPOSITORY,
 } from '../../domain/repositories/movie.repository';
-import { SWAPI_CLIENT, type ISwapiClient } from '../../infra/swapi/swapi';
-import { ExternalMovieMapper } from '../../infra/swapi/swapi.mapper';
+import { SWAPI_CLIENT, type ISwapiClient } from '../../infra/swapi/swapi.interface';
+import {
+  type IMoviesMapper,
+  MOVIES_MAPPER,
+} from '../../domain/interfaces/movies.mapper';
 
 @Injectable()
 export class SyncStarWarsMoviesUseCase {
@@ -12,6 +15,7 @@ export class SyncStarWarsMoviesUseCase {
     @Inject(MOVIE_REPOSITORY)
     private readonly movieRepository: IMovieRepository,
     @Inject(SWAPI_CLIENT) private readonly swapi: ISwapiClient,
+    @Inject(MOVIES_MAPPER) private readonly movieMapper: IMoviesMapper,
   ) {}
 
   async execute() {
@@ -20,7 +24,7 @@ export class SyncStarWarsMoviesUseCase {
       return;
     }
 
-    const movies = ExternalMovieMapper.toDomain(films);
+    const movies = this.movieMapper.fromExternalToDomain(films);
 
     if (movies.length <= 0) {
       return;

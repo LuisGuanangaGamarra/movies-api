@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ISwapiClient } from './swapi';
+import { ISwapiClient } from './swapi.interface';
 import { SawpiResponseDTO } from './types';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
