@@ -9,6 +9,8 @@ import { ListMoviesResponseDto } from '../../presentation/dtos/list-movies-respo
 import { MovieOrmEntity } from '../../infra/orm/movie.orm-entity';
 import { SawpiResponseDTO } from '../../infra/swapi/types';
 import { MovieDTO } from '../../presentation/dtos/movie.dto';
+import { MovieInputDto } from '../../aplication/use-cases/dtos/movie-input.dto';
+import { MovieRequestCreateDto } from '../../presentation/dtos/movie-request-create.dto';
 
 export interface IMoviesMapper {
   toInput(params: ListUserRequestDto): PaginationParams;
@@ -21,6 +23,8 @@ export interface IMoviesMapper {
   toListOrm(data: Omit<Movie, 'id'>[] | Movie[]): MovieOrmEntity[];
   fromExternalToDomain(data: SawpiResponseDTO): Movie[];
   toMovieResponse(data: Movie): MovieDTO;
+  fromRequestCreateToMovieInput(data: MovieRequestCreateDto): MovieInputDto;
+  fromInputToDomain(data: MovieInputDto): Movie;
 }
 
 export const MOVIES_MAPPER = Symbol('MOVIES_MAPPER');

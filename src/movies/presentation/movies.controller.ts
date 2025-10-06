@@ -10,6 +10,8 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Post,
+  Body,
 } from '@nestjs/common';
 import { SyncStarWarsMoviesUseCase } from '../aplication/use-cases/sync-sw-movies.usecase';
 import { ListUserRequestDto } from './dtos/list-user-request.dto';
@@ -24,13 +26,17 @@ import { MovieDTO } from './dtos/movie.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiCreatedResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Permission } from '../../shared/presentation/permission.decorator';
 import { JwtAuthGuard } from '../../auth/infrastructure/jwt-auth.guard';
 import { PermissionGuard } from '../../shared/presentation/permission.guard';
 import { ErrorDomainResponseDto } from '../../shared/presentation/dtos/error-domain-response.dto';
+import { CreateMovieUseCase } from '../aplication/use-cases/create-movie.usecase,ts';
+import { MovieRequestCreateDto } from './dtos/movie-request-create.dto';
 
 @ApiTags('movies')
 @Controller('movies')
@@ -42,6 +48,7 @@ export class MoviesController {
     private readonly moviesMapper: IMoviesMapper,
     private readonly listMoviesUC: ListMoviesUseCase,
     private readonly getMovieUC: GetMovieUseCase,
+    private readonly createMovieUC: CreateMovieUseCase,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -59,6 +66,16 @@ export class MoviesController {
   @ApiOkResponse({
     description: 'Listado de peliculas',
     type: ListMoviesResponseDto,
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
   })
   @SerializeOptions({ type: ListMoviesResponseDto })
   @Get()
@@ -84,5 +101,19 @@ export class MoviesController {
   async getMovieById(@Param('id') id: number) {
     const movie = await this.getMovieUC.execute(id);
     return this.moviesMapper.toMovieResponse(movie);
+  }
+
+  @ApiCreatedResponse({ description: 'Pelicula creada exitosamente' })
+  @ApiBadRequestResponse({
+    description: 'Errores de negocio o validación',
+    type: ErrorDomainResponseDto,
+  })
+  @ApiBearerAuth('access-token')
+  @Permission('MOVIE_CREATE')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Post()
+  async createMovie(@Body() movie: MovieRequestCreateDto) {
+    const input = this.moviesMapper.fromRequestCreateToMovieInput(movie);
+    await this.createMovieUC.execute(input);
   }
 }

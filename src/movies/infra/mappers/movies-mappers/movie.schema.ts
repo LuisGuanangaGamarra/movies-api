@@ -6,6 +6,8 @@ import { Movie } from '../../../domain/movie.entity';
 import { MovieDTO } from '../../../presentation/dtos/movie.dto';
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { Result } from '../../swapi/types';
+import { MovieInputDto } from '../../../aplication/use-cases/dtos/movie-input.dto';
+import { MovieRequestCreateDto } from '../../../presentation/dtos/movie-request-create.dto';
 
 const mapMovies = (movies: Movie[]): MovieDTO[] =>
   movies.map<MovieDTO>((movie) => ({
@@ -59,3 +61,17 @@ export const movieToMovieResponse: Schema<MovieDTO, Movie> = {
   releaseDate: 'releaseDate',
   synopsis: 'synopsis',
 };
+
+export const movieInputToDomain: Schema<Movie, Partial<MovieInputDto>> = {
+  id: 'id',
+  title: 'title',
+  director: 'director',
+  releaseDate: 'releaseDate',
+  synopsis: 'synopsis',
+  externalId: 'externalId',
+};
+
+export const movieRequestCreateToInput: Schema<
+  MovieInputDto,
+  MovieRequestCreateDto
+> = {};

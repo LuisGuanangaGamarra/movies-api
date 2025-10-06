@@ -4,8 +4,10 @@ import { ListUserRequestDto } from '../../../presentation/dtos/list-user-request
 import { PaginatedResult, PaginationParams } from '../../../types';
 import {
   movieEntityToDomain,
+  movieInputToDomain,
   movieOrmEntityToDomain,
   movieOutputToResponse,
+  movieRequestCreateToInput,
   movieRequestDTOToInput,
   movieToMovieResponse,
   swapiToMovieSchema,
@@ -16,6 +18,8 @@ import { ListMoviesResponseDto } from '../../../presentation/dtos/list-movies-re
 import { MovieOrmEntity } from '../../orm/movie.orm-entity';
 import { SawpiResponseDTO } from '../../swapi/types';
 import { MovieDTO } from '../../../presentation/dtos/movie.dto';
+import { MovieInputDto } from '../../../aplication/use-cases/dtos/movie-input.dto';
+import { MovieRequestCreateDto } from '../../../presentation/dtos/movie-request-create.dto';
 
 @Injectable()
 export class MovieMapper implements IMoviesMapper {
@@ -25,6 +29,8 @@ export class MovieMapper implements IMoviesMapper {
   private readonly toOrmSchema = movieOrmEntityToDomain;
   private readonly fromExternalToDomainSchema = swapiToMovieSchema;
   private readonly toMovieResponseSchema = movieToMovieResponse;
+  private readonly fromInputToDomainSchema = movieInputToDomain;
+  private readonly fromRequestCreatetoInputSchema = movieRequestCreateToInput;
 
   toInput(params: ListUserRequestDto): PaginationParams {
     return morphism(this.requestToInputSchema, params);
@@ -56,5 +62,13 @@ export class MovieMapper implements IMoviesMapper {
 
   toMovieResponse(data: Movie): MovieDTO {
     return morphism(this.toMovieResponseSchema, data);
+  }
+
+  fromRequestCreateToMovieInput(data: MovieRequestCreateDto): MovieInputDto {
+    return morphism(this.fromRequestCreatetoInputSchema, data, MovieInputDto);
+  }
+
+  fromInputToDomain(data: MovieInputDto): Movie {
+    return morphism(this.fromInputToDomainSchema, data, Movie);
   }
 }

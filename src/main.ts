@@ -25,9 +25,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Movies API')
-    .setDescription(
-      'DDD + Clean Code + RBAC (DB), JWT con rol, SWAPI desacoplado',
-    )
+    .setDescription('DDD + Clean Code + RBAC (DB), JWT con rol, SWAPI API')
     .setVersion('1.0.0')
     .addBearerAuth(
       {
