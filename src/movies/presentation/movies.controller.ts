@@ -13,6 +13,7 @@ import {
   Post,
   Body,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { SyncStarWarsMoviesUseCase } from '../aplication/use-cases/sync-sw-movies.usecase';
 import { ListUserRequestDto } from './dtos/list-user-request.dto';
@@ -40,6 +41,7 @@ import { CreateMovieUseCase } from '../aplication/use-cases/create-movie.usecase
 import { MovieRequestCreateDto } from './dtos/movie-request-create.dto';
 import { UpdateMovieUsecase } from '../aplication/use-cases/update-movie.usecase';
 import { MovieRequestUpdateDto } from './dtos/movie-request-update.dto';
+import { DeleteMovieUseCase } from '../aplication/use-cases/delete-movie.usecase';
 
 @ApiTags('movies')
 @Controller('movies')
@@ -53,6 +55,7 @@ export class MoviesController {
     private readonly getMovieUC: GetMovieUseCase,
     private readonly createMovieUC: CreateMovieUseCase,
     private readonly updateMovieUC: UpdateMovieUsecase,
+    private readonly deleteMovieUC: DeleteMovieUseCase,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -133,5 +136,25 @@ export class MoviesController {
   async updateMovie(@Body() movie: MovieRequestUpdateDto) {
     const input = this.moviesMapper.fromRequestUpdateToMovieInput(movie);
     await this.updateMovieUC.execute(input);
+  }
+
+  @ApiQuery({
+    name: 'id',
+    required: true,
+    type: Number,
+    example: 1,
+    description: 'Id de la pelicula',
+  })
+  @ApiOkResponse({ description: 'Pelicula eliminada exitosamente' })
+  @ApiBadRequestResponse({
+    description: 'Errores de negocio o validación',
+    type: ErrorDomainResponseDto,
+  })
+  @ApiBearerAuth('access-token')
+  @Permission('MOVIE_DELETE')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Delete(':id')
+  async deleteMovie(@Param('id') id: number) {
+    await this.deleteMovieUC.execute(id);
   }
 }
