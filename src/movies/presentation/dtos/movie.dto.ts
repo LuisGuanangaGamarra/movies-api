@@ -37,14 +37,15 @@ export class MovieDto {
     required: true,
   })
   @Expose()
-  @Transform(({ value }) =>
-    value
-      ? new Intl.DateTimeFormat('es-EC', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }).format(new Date(value))
-      : null,
+  @Transform(
+    ({ value }) => {
+      const date = new Date(value);
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      return `${dd}-${mm}-${yyyy}`;
+    },
+    { toPlainOnly: true },
   )
   releaseDate: Date;
 

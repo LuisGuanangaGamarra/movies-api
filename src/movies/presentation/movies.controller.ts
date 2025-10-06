@@ -1,4 +1,12 @@
-import { Controller, Get, Query, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Inject,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  SerializeOptions,
+} from '@nestjs/common';
 import { SyncStarWarsMoviesUseCase } from '../aplication/use-cases/sync-sw-movies.usecase';
 import { ListUserRequestDto } from './dtos/list-user-request.dto';
 import {
@@ -6,8 +14,10 @@ import {
   MOVIES_MAPPER,
 } from '../domain/interfaces/movies.mapper';
 import { ListMoviesUseCase } from '../aplication/use-cases/list-movies.usecase';
+import { ListUsersResponseDto } from './dtos/list-users-response.dto';
 
 @Controller('movies')
+@UseInterceptors(ClassSerializerInterceptor)
 export class MoviesController {
   constructor(
     private readonly syncSawpiUC: SyncStarWarsMoviesUseCase,
@@ -21,6 +31,7 @@ export class MoviesController {
     return this.syncSawpiUC.execute();
   }
 
+  @SerializeOptions({ type: ListUsersResponseDto })
   @Get()
   async listMovies(@Query() params: ListUserRequestDto) {
     const input = this.moviesMapper.toInput(params);
