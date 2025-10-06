@@ -15,7 +15,7 @@ export class ListMoviesResponseDto {
 
   @ApiProperty({
     type: Number,
-    example: 0,
+    example: 10,
     description: 'Numero total de peliculas.',
     required: true,
   })
@@ -32,7 +32,7 @@ export class ListMoviesResponseDto {
 
   @ApiProperty({
     type: Number,
-    example: 1,
+    example: 2,
     description: 'cuántos registros se muestran por página.',
   })
   @Expose()
@@ -40,7 +40,7 @@ export class ListMoviesResponseDto {
 
   @ApiProperty({
     type: Number,
-    example: 1,
+    example: 4,
     description: 'total de paginas',
   })
   @Expose()
