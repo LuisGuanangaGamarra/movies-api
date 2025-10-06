@@ -59,6 +59,18 @@ export class MovieTypeOrmRepository implements IMovieRepository {
     return row ? this.movieMapper.toDomain(row) : null;
   }
 
+  async findByTitleAndDifferentId(
+    title: string,
+    id: number,
+  ): Promise<Movie | null> {
+    const row = await this.repo
+      .createQueryBuilder('movie')
+      .where('movie.title = :title', { title })
+      .andWhere('movie.id != :id', { id })
+      .getOne();
+    return row ? this.movieMapper.toDomain(row) : null;
+  }
+
   async save(movie: Movie | Omit<Movie, 'id'>): Promise<void> {
     const movieEntity = this.movieMapper.toOrm(movie);
 

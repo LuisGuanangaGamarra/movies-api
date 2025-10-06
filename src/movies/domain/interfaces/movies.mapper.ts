@@ -11,6 +11,7 @@ import { SawpiResponseDTO } from '../../infra/swapi/types';
 import { MovieDTO } from '../../presentation/dtos/movie.dto';
 import { MovieInputDto } from '../../aplication/use-cases/dtos/movie-input.dto';
 import { MovieRequestCreateDto } from '../../presentation/dtos/movie-request-create.dto';
+import { MovieRequestUpdateDto } from '../../presentation/dtos/movie-request-update.dto';
 
 export interface IMoviesMapper {
   toInput(params: ListUserRequestDto): PaginationParams;
@@ -24,6 +25,7 @@ export interface IMoviesMapper {
   fromExternalToDomain(data: SawpiResponseDTO): Movie[];
   toMovieResponse(data: Movie): MovieDTO;
   fromRequestCreateToMovieInput(data: MovieRequestCreateDto): MovieInputDto;
+  fromRequestUpdateToMovieInput(data: MovieRequestUpdateDto): MovieInputDto;
   fromInputToDomain(data: MovieInputDto): Movie;
 }
 

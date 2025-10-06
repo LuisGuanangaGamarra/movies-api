@@ -1,12 +1,12 @@
 import { Transform } from 'class-transformer';
 import {
-  Matches,
   IsNotEmpty,
   MaxLength,
   IsString,
   IsOptional,
   IsNumber,
   Min,
+  IsDate,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { AtLeastOneDefined } from '../../../shared/presentation/validators/at-least-one-defined.decorator';
@@ -19,8 +19,8 @@ export class MovieRequestUpdateDto {
     description: 'Id de la pelicula',
     required: true,
   })
-  @IsNumber()
-  @Min(1)
+  @IsNumber({}, { message: 'El id debe ser un numero' })
+  @Min(1, { message: 'El id debe ser mayor a 0' })
   id: number;
 
   @ApiProperty({
@@ -30,7 +30,9 @@ export class MovieRequestUpdateDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: 'El titulo debe ser un string',
+  })
   @IsNotEmpty({
     message: 'El titulo es requerido',
   })
@@ -46,7 +48,9 @@ export class MovieRequestUpdateDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: 'El nombre del o de los directores debe ser un string',
+  })
   @IsNotEmpty({
     message: 'El nombre del o de los directores es requerido',
   })
@@ -62,18 +66,23 @@ export class MovieRequestUpdateDto {
     description: 'año de estreno de la pelicula',
     required: false,
   })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Matches(/^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/, {
-    message: 'La fecha debe tener el formato dd-mm-yyyy',
-  })
   @Transform(({ value }) => {
-    const match = (value as string).match(/^(\d{2})-(\d{2})-(\d{4})$/);
-    if (!match) return null;
+    if (!value || typeof value !== 'string' || value.trim() === '')
+      return undefined;
+    const match = value.match(
+      /^(0[1-9]|[1-2][0-9]|3[01])-(0[1-9]|1[0-2])-(\d{4})$/,
+    );
+    if (!match) return undefined;
     const [, dd, mm, yyyy] = match;
     const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
     return date;
+  })
+  @IsOptional()
+  @IsNotEmpty({
+    message: 'La fecha de estreno es requerida',
+  })
+  @IsDate({
+    message: 'no es una fecha valida',
   })
   releaseDate?: Date;
 
@@ -84,7 +93,11 @@ export class MovieRequestUpdateDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'La descripcion es requerida',
+  })
+  @IsString({
+    message: 'La descripcion debe ser un string',
+  })
   synopsis?: string;
 }

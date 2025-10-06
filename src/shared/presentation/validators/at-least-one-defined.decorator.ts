@@ -8,7 +8,9 @@ import {
 
 @ValidatorConstraint({ name: 'AtLeastOneDefinedClass', async: false })
 class AtLeastOneDefinedClassConstraint implements ValidatorConstraintInterface {
-  validate(object: any, args: ValidationArguments) {
+  validate(_: any, args: ValidationArguments) {
+    const object = args.object;
+    if (!object || typeof object !== 'object') return false;
     const properties = args.constraints as string[];
     return properties.some((prop) => {
       const value = (object as Record<string, unknown>)[prop];
@@ -22,17 +24,15 @@ class AtLeastOneDefinedClassConstraint implements ValidatorConstraintInterface {
   }
 }
 
-type ClassConstructor<T = any> = new (...args: any[]) => T;
-
 export function AtLeastOneDefined(
   properties: string[],
   options?: ValidationOptions,
 ) {
-  return function (constructor: ClassConstructor) {
+  return function (constructor: new (...args: any[]) => object) {
     registerDecorator({
       name: 'AtLeastOneDefinedClass',
       target: constructor,
-      propertyName: constructor.name,
+      propertyName: '',
       constraints: properties,
       options,
       validator: AtLeastOneDefinedClassConstraint,

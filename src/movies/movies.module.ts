@@ -12,6 +12,7 @@ import { MOVIES_MAPPER } from './domain/interfaces/movies.mapper';
 import { MovieMapper } from './infra/mappers/movies-mappers/movie.mapper';
 import { GetMovieUseCase } from './aplication/use-cases/get-movie.usecase';
 import { CreateMovieUseCase } from './aplication/use-cases/create-movie.usecase,ts';
+import { UpdateMovieUsecase } from './aplication/use-cases/update-movie.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MovieOrmEntity])],
@@ -32,6 +33,7 @@ import { CreateMovieUseCase } from './aplication/use-cases/create-movie.usecase,
     ListMoviesUseCase,
     GetMovieUseCase,
     CreateMovieUseCase,
+    UpdateMovieUsecase,
   ],
   controllers: [MoviesController],
 })

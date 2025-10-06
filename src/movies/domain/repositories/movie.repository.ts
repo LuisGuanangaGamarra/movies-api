@@ -9,5 +9,6 @@ export interface IMovieRepository {
   update(movie: PartialExcept<Movie, 'id'>): Promise<void>;
   remove(id: number): Promise<void>;
   upsertByExternalId(movies: Movie[]): Promise<void>;
+  findByTitleAndDifferentId(title: string, id: number): Promise<Movie | null>;
 }
 export const MOVIE_REPOSITORY = Symbol('MOVIE_REPOSITORY');

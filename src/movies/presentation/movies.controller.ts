@@ -12,6 +12,7 @@ import {
   Param,
   Post,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { SyncStarWarsMoviesUseCase } from '../aplication/use-cases/sync-sw-movies.usecase';
 import { ListUserRequestDto } from './dtos/list-user-request.dto';
@@ -37,6 +38,8 @@ import { PermissionGuard } from '../../shared/presentation/permission.guard';
 import { ErrorDomainResponseDto } from '../../shared/presentation/dtos/error-domain-response.dto';
 import { CreateMovieUseCase } from '../aplication/use-cases/create-movie.usecase,ts';
 import { MovieRequestCreateDto } from './dtos/movie-request-create.dto';
+import { UpdateMovieUsecase } from '../aplication/use-cases/update-movie.usecase';
+import { MovieRequestUpdateDto } from './dtos/movie-request-update.dto';
 
 @ApiTags('movies')
 @Controller('movies')
@@ -49,6 +52,7 @@ export class MoviesController {
     private readonly listMoviesUC: ListMoviesUseCase,
     private readonly getMovieUC: GetMovieUseCase,
     private readonly createMovieUC: CreateMovieUseCase,
+    private readonly updateMovieUC: UpdateMovieUsecase,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -115,5 +119,19 @@ export class MoviesController {
   async createMovie(@Body() movie: MovieRequestCreateDto) {
     const input = this.moviesMapper.fromRequestCreateToMovieInput(movie);
     await this.createMovieUC.execute(input);
+  }
+
+  @ApiOkResponse({ description: 'Pelicula actualizada exitosamente' })
+  @ApiBadRequestResponse({
+    description: 'Errores de negocio o validación',
+    type: ErrorDomainResponseDto,
+  })
+  @ApiBearerAuth('access-token')
+  @Permission('MOVIE_UPDATE')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Patch()
+  async updateMovie(@Body() movie: MovieRequestUpdateDto) {
+    const input = this.moviesMapper.fromRequestUpdateToMovieInput(movie);
+    await this.updateMovieUC.execute(input);
   }
 }
