@@ -1,10 +1,10 @@
 {
   "name": "movies-api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "API de gestión de películas basada en NestJS + Clean Architecture + DDD",
+  "author": "Luis Guananga Gamarra <luisgamarra_97@hotmail.com>",
+  "license": "MIT",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config jest-unit.ts --runInBand",
     "test:e2e": "jest --config ./test/e2e/jest-e2e.json",
     "typeorm": "node ./node_modules/typeorm/cli.js -d dist/shared/infra/data-source.js",
-    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/shared/infra/data-source.ts",
+    "typeorm:local": "node -r dotenv/config -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/shared/infra/data-source.ts",
     "migration:local:run": "npm run typeorm:local -- migration:run",
     "migration:local:revert": "npm run typeorm:local -- migration:revert",
     "migration:run": "npm run typeorm migration:run",
