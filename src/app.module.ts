@@ -14,7 +14,10 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: resolve(__dirname, `../.env`) ?? undefined,
+      envFilePath: [
+        '/etc/secrets/.env',
+        resolve(__dirname, `../.env`) ?? undefined,
+      ],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
