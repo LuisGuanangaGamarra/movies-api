@@ -275,6 +275,18 @@ http://localhost:3000/docs
 
 ---
 
+## 🚀 Demo en línea
+
+El proyecto está desplegado y accesible públicamente en Render:
+
+🔗 **Demo API:** [Demo](https://movies-api-0vch.onrender.com/)
+
+```
+    user_admin_demo: admin@admin.com
+    password_admin_demo: WPMGxSUULtoVBeKZ2n76
+```
+
+---
 ## 🚀 Endpoints principales
 
 | Método   | Endpoint                 | Descripción                                        |
