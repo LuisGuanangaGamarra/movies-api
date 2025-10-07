@@ -281,6 +281,7 @@ El proyecto está desplegado y accesible públicamente en Render:
 
 🔗 **Demo API:** [Demo](https://movies-api-0vch.onrender.com/)
 
+🔗 **Documentacion de la API:** [Documentacion Swagger](https://movies-api-0vch.onrender.com/docs)
 ```
     user_admin_demo: admin@admin.com
     password_admin_demo: WPMGxSUULtoVBeKZ2n76
