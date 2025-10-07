@@ -20,6 +20,9 @@ import { JwtModule } from '@nestjs/jwt';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
+        const isSSL = config.get<string>('DB_SSL', 'false');
+        const sslConfig =
+          isSSL === 'true' ? { rejectUnauthorized: false } : false;
         return {
           ...(DataSource.options as PostgresConnectionOptions),
           host: config.get<string>('DB_HOST'),
@@ -27,6 +30,7 @@ import { JwtModule } from '@nestjs/jwt';
           username: config.get<string>('DB_USER'),
           password: config.get<string>('DB_PASS'),
           database: config.get<string>('DB_NAME'),
+          ssl: sslConfig,
         };
       },
     }),

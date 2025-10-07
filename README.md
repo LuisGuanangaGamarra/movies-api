@@ -11,18 +11,18 @@ La arquitectura está diseñada para mantener una alta cohesión y bajo acoplami
 
 ## ⚙️ Tecnologías principales
 
-| Capa | Tecnología |
-|------|-------------|
-| Framework principal | [NestJS](https://nestjs.com/) |
-| ORM | [TypeORM](https://typeorm.io/) |
-| Base de datos | PostgreSQL |
-| Contenedores | Docker / Docker Compose |
-| Validaciones | class-validator / class-transformer |
-| Documentación | Swagger (OpenAPI) |
-| Arquitectura | Clean Architecture + DDD |
-| Testing | Jest (unit) |
-| Mapeo de datos | morphism |
-| Estilo de código | ESLint + Prettier |
+| Capa                | Tecnología                          |
+| ------------------- | ----------------------------------- |
+| Framework principal | [NestJS](https://nestjs.com/)       |
+| ORM                 | [TypeORM](https://typeorm.io/)      |
+| Base de datos       | PostgreSQL                          |
+| Contenedores        | Docker / Docker Compose             |
+| Validaciones        | class-validator / class-transformer |
+| Documentación       | Swagger (OpenAPI)                   |
+| Arquitectura        | Clean Architecture + DDD            |
+| Testing             | Jest (unit)                         |
+| Mapeo de datos      | morphism                            |
+| Estilo de código    | ESLint + Prettier                   |
 
 ---
 
@@ -37,7 +37,7 @@ movies-api/
 │   │   ├── domain/                     # Entidades y repositorios de dominio
 │   │   ├── infra/                      # Implementaciones concretas (TypeORM, mappers)
 │   │   └── presentation/               # Controladores, DTOs, validaciones
-│   │       
+│   │
 │   ├── auth/                           # Contexto de dominio principal
 │   │   ├── application/                # Casos de uso (Use Cases)
 │   │   ├── domain/                     # Entidades y repositorios de dominio
@@ -60,7 +60,7 @@ movies-api/
 │
 ├── test/                               # Carpeta de pruebas
 │   ├── unit/                           # Tests unitarios
-│   |   |── mocks                       # Datos de pruebas 
+│   |   |── mocks                       # Datos de pruebas
 ├── compose.yml                         # Orquestación de contenedores
 ├── Dockerfile                          # Imagen multi-stage de la app
 ├── .env.example                        # Variables de entorno base
@@ -71,13 +71,13 @@ movies-api/
 
 ## 📋 Requisitos mínimos
 
-| Recurso | Versión mínima               |
-|----------|------------------------------|
-| Node.js | 22.x                         |
-| npm | 10.x                         |
-| Docker | 24.x                         |
-| Docker Compose | 2.x                          |
-| PostgreSQL | 15.x                         |
+| Recurso           | Versión mínima               |
+| ----------------- | ---------------------------- |
+| Node.js           | 22.x                         |
+| npm               | 10.x                         |
+| Docker            | 24.x                         |
+| Docker Compose    | 2.x                          |
+| PostgreSQL        | 15.x                         |
 | Sistema operativo | Linux / macOS / Windows WSL2 |
 
 ---
@@ -97,6 +97,7 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASS=postgres
 DB_NAME=movies_db
+DB_SSL=false
 
 # Admin user Inicial
 USER_ADMIN=admin@localhost.com
@@ -120,79 +121,98 @@ SWAPI_BASE_URL=https://www.swapi.tech/api
 ## 🧰 Levantar el proyecto en local (sin Docker)
 
 ### 1️⃣ Instalar dependencias
+
 ```bash
 npm ci
 ```
 
 ### 2️⃣ Crear base de datos local
+
 Asegúrate de tener PostgreSQL corriendo en tu máquina y crea la base de datos manualmente:
+
 ```bash
 createdb movies_db
 ```
 
 ### 3️⃣ Configurar entorno
+
 Copia el `.env.example` y ajústalo a tus credenciales locales:
+
 ```bash
 cp .env.example .env
 ```
 
 ### 4️⃣ Ejecutar migraciones
+
 Ejecuta las migraciones de TypeORM en tu entorno local:
+
 ```bash
 npm run migration:local:run
 ```
 
 Si necesitas revertirlas:
+
 ```bash
 npm run migration:local:revert
 ```
 
 ### 5️⃣ Levantar el servidor
+
 ```bash
 npm run start:dev
 ```
 
 Por defecto estará disponible en:
+
 ```
 http://localhost:3000
 ```
 
 ---
 
-
 ## 🐳 Levantar el proyecto con Docker y Docker Compose
 
 ### 1️⃣ Clonar el repositorio
+
 ```bash
 git clone https://github.com/LuisGuanangaGamarra/movies-api.git
 cd movies-api
 ```
 
 ### 2️⃣ Crear el archivo `.env`
+
 Copia el ejemplo y ajusta las credenciales:
+
 ```bash
 cp .env.example .env
 ```
+
 ### 3️⃣ Ajustar variables de entorno DB en `compose.yml`
+
 ```bash
     environment:
       POSTGRES_USER: <POSTGRES_USER>
       POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
       POSTGRES_DB: <POSTGRES_DB>
 ```
+
 recordar que estos valores deben ser iguales a los del archivo `.env`
 
 ### 4️⃣ Levantar los contenedores
+
 Ejecuta:
+
 ```bash
 docker-compose up -d --build
 ```
 
 Esto levantará:
+
 - `movies-api`: servidor NestJS (puerto 3000)
 - `postgres`: base de datos PostgreSQL (puerto 5432)
 
 Verifica que ambos estén corriendo:
+
 ```bash
 docker ps
 ```
@@ -201,7 +221,8 @@ docker ps
 
 ## 🧩 Ejecutar migraciones de TypeORM
 
-de manera local se puede hacerlo con el comando 
+de manera local se puede hacerlo con el comando
+
 ```bash
 npm run migration:local:run
 ```
@@ -237,6 +258,7 @@ npm run test:cov
 ```
 
 Los reportes se guardan en:
+
 ```
 coverage/unit/
 ```
@@ -256,7 +278,7 @@ http://localhost:3000/docs
 ## 🚀 Endpoints principales
 
 | Método   | Endpoint                 | Descripción                                        |
-|----------|--------------------------|----------------------------------------------------|
+| -------- | ------------------------ | -------------------------------------------------- |
 | `GET`    | `/movies`                | Listar todas las películas                         |
 | `GET`    | `/movies?page=1&limit=5` | Lista y divide en paginas las películas            |
 | `POST`   | `/movies/sync`           | Sincroniza las películas desde la Star Wars API    |
@@ -276,26 +298,26 @@ de la api en root del proyecto [postman-collection](https://github.com/LuisGuana
 
 El proyecto está dividido en capas **bien delimitadas**:
 
-| Capa | Responsabilidad |
-|------|------------------|
-| `domain/` | Contiene las entidades de dominio, interfaces y lógica pura de negocio |
-| `application/` | Orquesta casos de uso (use cases), sin depender de frameworks |
-| `infra/` | Implementaciones concretas (ORM, mappers, persistencia, integraciones externas) |
-| `presentation/` | Controladores, validaciones y DTOs expuestos a HTTP |
-| `shared/` | Excepciones, validadores, utilidades y filtros globales |
+| Capa            | Responsabilidad                                                                 |
+| --------------- | ------------------------------------------------------------------------------- |
+| `domain/`       | Contiene las entidades de dominio, interfaces y lógica pura de negocio          |
+| `application/`  | Orquesta casos de uso (use cases), sin depender de frameworks                   |
+| `infra/`        | Implementaciones concretas (ORM, mappers, persistencia, integraciones externas) |
+| `presentation/` | Controladores, validaciones y DTOs expuestos a HTTP                             |
+| `shared/`       | Excepciones, validadores, utilidades y filtros globales                         |
 
 ---
 
 ## 🧹 Comandos útiles
 
-| Acción | Comando |
-|--------|----------|
-| Iniciar en modo desarrollo | `npm run start:dev` |
-| Compilar a producción | `npm run build` |
-| Ejecutar la app compilada | `npm run start:prod` |
-| Ejecutar tests unitarios | `npm run test` |
-| Generar cobertura | `npm run test:cov` |
-| Crear migración nueva | `npm run migration:generate --name <nombre>` |
+| Acción                     | Comando                                      |
+| -------------------------- | -------------------------------------------- |
+| Iniciar en modo desarrollo | `npm run start:dev`                          |
+| Compilar a producción      | `npm run build`                              |
+| Ejecutar la app compilada  | `npm run start:prod`                         |
+| Ejecutar tests unitarios   | `npm run test`                               |
+| Generar cobertura          | `npm run test:cov`                           |
+| Crear migración nueva      | `npm run migration:generate --name <nombre>` |
 
 ---
 
