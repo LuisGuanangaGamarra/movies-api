@@ -88,4 +88,17 @@ describe('UpdateMovieUsecase', () => {
     );
     expect(movieRepository.update).not.toHaveBeenCalled();
   });
+
+  it('should throw a DomainException when the movie to update does not exist', async () => {
+    const domainMovie = { ...movieInputMockDto } as Movie;
+
+    moviesMapper.fromInputToDomain.mockReturnValue(domainMovie);
+    movieRepository.findById.mockResolvedValue(null);
+    await expect(updateMovieUsecase.execute(movieInputMockDto)).rejects.toThrow(
+      new DomainException('MOVIE_NOT_FOUND', 'Pelicula no encontrada'),
+    );
+    expect(moviesMapper.fromInputToDomain).toHaveBeenCalledWith(
+      movieInputMockDto,
+    );
+  });
 });
