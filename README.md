@@ -279,7 +279,7 @@ http://localhost:3000/docs
 
 El proyecto está desplegado y accesible públicamente en Render:
 
-🔗 **Demo API:** [Demo](https://movies-api-0vch.onrender.com/)
+🔗 **Demo API:** [Demo](https://movies-api-0vch.onrender.com/movies)
 
 🔗 **Documentacion de la API:** [Documentacion Swagger](https://movies-api-0vch.onrender.com/docs)
 ```
