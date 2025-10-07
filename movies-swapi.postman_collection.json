@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "e60908ef-a150-4a5a-a4bd-9ed72e0c9a05",
+		"name": "movies-swapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5839330"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@hotmail.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register usuario normal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@hotmail.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registro admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibHVpc2dhbWFycmFfOTdAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTk4MjAxMjUsImV4cCI6MTc1OTgyMzcyNSwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.YieQx8S8CrjSgPf4U_smbAiGxnHa67Escx0HRI3DC0I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/register-admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"register-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2",
+							"description": "Parametros para paginacion opcional",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibHVpc2dhbWFycmFAZ21haWwuY29tIiwicm9sZSI6IlJFR1VMQVIiLCJpYXQiOjE3NTk4MTE4MjEsImV4cCI6MTc1OTgxNTQyMSwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.0T5LJhHyNCxkvMbeEEOiL0mGlvvQ8f0o77kPnoL5ylY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/movies/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sync movies",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibHVpc2dhbWFycmFfOTdAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTk4MTE4NjQsImV4cCI6MTc1OTgxNTQ2NCwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.DlvnrhMZ9z9gQWOjEIHhPtWccFJm-lEDOypxLb5Ch_s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/movies/sync",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies",
+						"sync"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibHVpc2dhbWFycmFfOTdAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTk4MTE4NjQsImV4cCI6MTc1OTgxNTQ2NCwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.DlvnrhMZ9z9gQWOjEIHhPtWccFJm-lEDOypxLb5Ch_s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"una nueva esparanza para conexa\",\r\n    \"director\": \"Luis Guananga\",\r\n    \"releaseDate\": \"06-10-2025\",\r\n    \"synopsis\": \"su mejor decision\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/movies/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibHVpc2dhbWFycmFfOTdAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTk4MTE4NjQsImV4cCI6MTc1OTgxNTQ2NCwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.DlvnrhMZ9z9gQWOjEIHhPtWccFJm-lEDOypxLb5Ch_s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"A New Hope for Conexia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/movies/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibHVpc2dhbWFycmFfOTdAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTk3NjQ2MTEsImV4cCI6MTc1OTc2ODIxMSwiYXVkIjoicHVibGljIiwiaXNzIjoibW92aWVzLXN3YXBpIn0.HsruKR9VxlXSxlXmNRPXksth1ct1wItY2Y4tH42H4gI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/movies/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"movies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
