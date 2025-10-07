@@ -7,9 +7,12 @@ import rateLimit from 'express-rate-limit';
 
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './shared/infra/filters/exception.filter';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const expressApp = app.getHttpAdapter().getInstance();
+
   app.use(helmet());
   app.enableCors({
     origin: process.env.CORS_ORIGIN ?? '*',
@@ -17,6 +20,10 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
+  expressApp.set(
+    'trust proxy',
+    process.env.NODE_ENV === 'production' ? 1 : false,
+  );
   app.use(rateLimit({ windowMs: 60 * 1000, limit: 100 }));
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
