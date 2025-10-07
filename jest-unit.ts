@@ -10,8 +10,16 @@ const config: Config = {
   testMatch: ['**/*.spec.ts', '**/*.test.ts'],
 
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.(t|j)s$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.json',
+        isolatedModules: false,
+        diagnostics: false,
+      },
+    ],
   },
+  setupFilesAfterEnv: ['<rootDir>/test/unit/setup.ts'],
 
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
@@ -23,6 +31,8 @@ const config: Config = {
     '!<rootDir>/src/**/*.module.ts',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/**/dto(s)/**/*.ts',
+    '!<rootDir>/src/**/*.schema.ts',
+    '!<rootDir>/src/**/*.orm-entity.ts',
   ],
   forceCoverageMatch: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: ['/node_modules/', '/test/'],

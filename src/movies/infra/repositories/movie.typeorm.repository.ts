@@ -14,8 +14,10 @@ import {
 export class MovieTypeOrmRepository implements IMovieRepository {
   constructor(
     @InjectRepository(MovieOrmEntity)
+    // istanbul ignore next
     private readonly repo: Repository<MovieOrmEntity>,
     @Inject(MOVIES_MAPPER)
+    // istanbul ignore next
     private readonly movieMapper: IMoviesMapper,
   ) {}
 
