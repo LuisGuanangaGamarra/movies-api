@@ -1,14 +1,33 @@
+import { Injectable } from '@nestjs/common';
+
+import { morphism } from 'morphism';
+
+import {
+  userRequestDTOTOUserInput,
+  userOrmEntityToDomain,
+  UserRequestWithRole,
+} from './user.schema';
+import { RegisterUserInputDTO } from '../../aplication/dtos/register-user-input.dto';
 import { UserOrmEntity } from '../orm/user.orm-entity';
 import { UserEntity } from '../../domain/user.entity';
-import { RoleEntity } from '../../domain/role.entity';
-import { PermissionEntity } from '../../domain/permission.entity';
+import { IUserMapper } from '../../domain/interfaces/user.mapper';
 
-export class UserMapper {
-  static mapToDomain(user: UserOrmEntity): UserEntity {
-    const permissions = user.role.permissions.map(
-      (permission) => new PermissionEntity(permission.id, permission.name),
+@Injectable()
+export class UserMapper implements IUserMapper {
+  private readonly userRequestToApplicationSchema = userRequestDTOTOUserInput;
+  private readonly userOrmEntityToDomainSchema = userOrmEntityToDomain;
+
+  public fromRequestToApplication(
+    userRequestDTO: UserRequestWithRole,
+  ): RegisterUserInputDTO {
+    return morphism(this.userRequestToApplicationSchema, userRequestDTO);
+  }
+
+  public fromOrmEntityToDomain(userOrmEntity: UserOrmEntity): UserEntity {
+    return morphism(
+      this.userOrmEntityToDomainSchema,
+      userOrmEntity,
+      UserEntity,
     );
-    const rol = new RoleEntity(user.role.id, user.role.name, permissions);
-    return new UserEntity(user.id, user.email, user.passwordHash, rol);
   }
 }

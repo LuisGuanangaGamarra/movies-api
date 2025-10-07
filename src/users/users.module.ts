@@ -9,6 +9,8 @@ import { USER_REPOSITORY } from './domain/repositories/user.repository';
 import { UserTypeOrmRepository } from './infra/repositories/user.typeorm.repository';
 import { RegisterUserUseCase } from './aplication/use-cases/register-user.usecase';
 import { UsersController } from './presentation/users.controller';
+import { USER_MAPPER } from './domain/interfaces/user.mapper';
+import { UserMapper } from './infra/mappers/user.mapper';
 
 @Module({
   imports: [
@@ -26,6 +28,10 @@ import { UsersController } from './presentation/users.controller';
     {
       provide: USER_REPOSITORY,
       useClass: UserTypeOrmRepository,
+    },
+    {
+      provide: USER_MAPPER,
+      useClass: UserMapper,
     },
     RegisterUserUseCase,
   ],

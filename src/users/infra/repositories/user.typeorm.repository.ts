@@ -4,8 +4,11 @@ import { UserOrmEntity } from '../orm/user.orm-entity';
 import { Repository } from 'typeorm';
 import { RoleOrmEntity } from '../orm/role.orm-entity';
 import { UserEntity } from '../../domain/user.entity';
-import { UserMapper } from '../mappers/user.mapper';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import {
+  USER_MAPPER,
+  type IUserMapper,
+} from '../../domain/interfaces/user.mapper';
 
 @Injectable()
 export class UserTypeOrmRepository implements IUserRepository {
@@ -14,6 +17,8 @@ export class UserTypeOrmRepository implements IUserRepository {
     private readonly userRepository: Repository<UserOrmEntity>,
     @InjectRepository(RoleOrmEntity)
     private readonly roleRepository: Repository<RoleOrmEntity>,
+    @Inject(USER_MAPPER)
+    private readonly userMapper: IUserMapper,
   ) {}
 
   async findByEmail(email: string): Promise<UserEntity | null> {
@@ -23,7 +28,7 @@ export class UserTypeOrmRepository implements IUserRepository {
       .leftJoinAndSelect('role.permissions', 'permissions')
       .where('user.email = :email', { email })
       .getOne();
-    return entity ? UserMapper.mapToDomain(entity) : null;
+    return entity ? this.userMapper.fromOrmEntityToDomain(entity) : null;
   }
 
   async findById(id: number): Promise<UserEntity | null> {
@@ -33,7 +38,7 @@ export class UserTypeOrmRepository implements IUserRepository {
       .leftJoinAndSelect('role.permissions', 'permissions')
       .where('user.id = :id', { id })
       .getOne();
-    return entity ? UserMapper.mapToDomain(entity) : null;
+    return entity ? this.userMapper.fromOrmEntityToDomain(entity) : null;
   }
 
   async save(user: UserEntity | Omit<UserEntity, 'id'>): Promise<void> {

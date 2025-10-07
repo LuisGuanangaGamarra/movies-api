@@ -10,7 +10,7 @@ import { DomainException } from 'src/shared/domain/exceptions/domain.exception';
 import { userEntityDomainMock } from '../../../shared/mocks/user-entity-domain';
 import { Test } from '@nestjs/testing';
 
-import { LoginOutputApplicationDTO } from '../../../../../src/auth/application/dtos/login-ouput-application.dto';
+import { LoginOutputApplicationDTO } from 'src/auth/application/dtos/login-ouput-application.dto';
 
 const mockCompare: jest.Mock<Promise<boolean>, [string, string]> = jest.fn<
   Promise<boolean>,

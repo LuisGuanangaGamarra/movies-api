@@ -4,19 +4,26 @@ import {
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Inject } from '@nestjs/common';
 import { ErrorDomainResponseDto } from '../../shared/presentation/dtos/error-domain-response.dto';
 import { UserRegisterDto } from './dtos/user-register.dto';
-import { UserHttpMapper } from './mappers/user-http.mapper';
 import { RegisterUserUseCase } from '../aplication/use-cases/register-user.usecase';
 import { Permission } from '../../shared/presentation/permission.decorator';
 import { JwtAuthGuard } from '../../auth/infrastructure/jwt-auth.guard';
 import { PermissionGuard } from '../../shared/presentation/permission.guard';
+import {
+  type IUserMapper,
+  USER_MAPPER,
+} from '../domain/interfaces/user.mapper';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly registerUC: RegisterUserUseCase) {}
+  constructor(
+    private readonly registerUC: RegisterUserUseCase,
+    @Inject(USER_MAPPER)
+    private readonly userMapper: IUserMapper,
+  ) {}
 
   @ApiCreatedResponse({ description: 'Usuario registrado exitosamente' })
   @ApiBadRequestResponse({
@@ -25,8 +32,10 @@ export class UsersController {
   })
   @Post('register')
   register(@Body() registerDto: UserRegisterDto) {
-    const dtoInput = UserHttpMapper.toApplication(registerDto, 'REGULAR');
-
+    const dtoInput = this.userMapper.fromRequestToApplication({
+      ...registerDto,
+      role: 'REGULAR',
+    });
     return this.registerUC.execute(dtoInput);
   }
 
@@ -40,8 +49,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Post('register-admin')
   registerAdmin(@Body() registerDto: UserRegisterDto) {
-    const dtoInput = UserHttpMapper.toApplication(registerDto, 'ADMIN');
-
+    const dtoInput = this.userMapper.fromRequestToApplication({
+      ...registerDto,
+      role: 'ADMIN',
+    });
     return this.registerUC.execute(dtoInput);
   }
 }

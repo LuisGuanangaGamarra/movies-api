@@ -7,8 +7,8 @@ import { MovieRequestUpdateDto } from 'src/movies/presentation/dtos/movie-reques
 import { ListUserRequestDto } from 'src/movies/presentation/dtos/list-user-request.dto';
 import { PaginatedResult, PaginationParams } from 'src/movies/types';
 import { movieMock } from '../../../../shared/mocks/movie.mock';
-import { SawpiResponseDTO } from '../../../../../../src/movies/infra/swapi/types';
-import { MovieResponseDto } from '../../../../../../src/movies/presentation/dtos/movie-response.dto';
+import { SawpiResponseDTO } from 'src/movies/infra/swapi/types';
+import { MovieResponseDto } from 'src/movies/presentation/dtos/movie-response.dto';
 
 const mockMorphismFunc = jest.fn<unknown, unknown[]>();
 jest.mock('morphism', () => ({
