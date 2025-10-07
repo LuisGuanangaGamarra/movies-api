@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 import * as bcrypt from 'bcrypt';
+
 import {
   type IUserRepository,
   USER_REPOSITORY,
 } from '../../../users/domain/repositories/user.repository';
-
-import { JwtService } from '@nestjs/jwt';
-import { LoginInputDTO } from '../dtos/dtos';
-import { type LoginOutputDTO } from '../dtos/dtos';
+import { LoginInputApplicationDTO } from '../dtos/login-input-application.dto';
 import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
+import { LoginOutputApplicationDTO } from '../dtos/login-ouput-application.dto';
 
 @Injectable()
 export class LoginUseCase {
@@ -19,7 +19,10 @@ export class LoginUseCase {
     private readonly jwtService: JwtService,
   ) {}
 
-  async execute({ email, password }: LoginInputDTO): Promise<LoginOutputDTO> {
+  async execute({
+    email,
+    password,
+  }: LoginInputApplicationDTO): Promise<LoginOutputApplicationDTO> {
     const user = await this.userRepository.findByEmail(email);
     if (!user)
       throw new DomainException('USER_NOT_FOUND', 'Usuario no encontrado', {

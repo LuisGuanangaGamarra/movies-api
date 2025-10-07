@@ -52,7 +52,8 @@ export class MovieMapper implements IMoviesMapper {
   }
 
   toOrm(data: Omit<Movie, 'id'> | Movie): MovieOrmEntity {
-    return morphism(this.toOrmSchema, data, MovieOrmEntity);
+    const map = morphism(this.toOrmSchema, data, MovieOrmEntity);
+    return this.removeUndefined(map);
   }
 
   toListOrm(data: Omit<Movie, 'id'>[] | Movie[]): MovieOrmEntity[] {
@@ -77,5 +78,12 @@ export class MovieMapper implements IMoviesMapper {
 
   fromInputToDomain(data: MovieInputDto): Movie {
     return morphism(this.fromInputToDomainSchema, data, Movie);
+  }
+
+  private removeUndefined<T extends object>(obj: T): T {
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+      if (value !== undefined) (acc as object)[key] = value as unknown;
+      return acc;
+    }, {} as T);
   }
 }

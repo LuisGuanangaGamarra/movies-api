@@ -102,6 +102,6 @@ export class MovieTypeOrmRepository implements IMovieRepository {
       ...movieEntity,
     });
 
-    await this.repo.save(entity);
+    await this.repo.update(entity.id, entity);
   }
 }
