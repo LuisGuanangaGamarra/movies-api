@@ -21,7 +21,6 @@ RUN apk add --no-cache netcat-openbsd
 RUN addgroup -S app && adduser -S app -G app
 
 COPY --from=builder --chown=app:app /app/dist ./dist
-COPY --chown=app:app docker-entrypoint.sh ./
 
 RUN chown app:app /app
 
@@ -31,4 +30,4 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 EXPOSE 3000
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["node", "dist/main.js"]
