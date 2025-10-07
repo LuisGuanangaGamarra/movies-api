@@ -117,6 +117,49 @@ SWAPI_BASE_URL=https://www.swapi.tech/api
 
 ---
 
+## 🧰 Levantar el proyecto en local (sin Docker)
+
+### 1️⃣ Instalar dependencias
+```bash
+npm ci
+```
+
+### 2️⃣ Crear base de datos local
+Asegúrate de tener PostgreSQL corriendo en tu máquina y crea la base de datos manualmente:
+```bash
+createdb movies_db
+```
+
+### 3️⃣ Configurar entorno
+Copia el `.env.example` y ajústalo a tus credenciales locales:
+```bash
+cp .env.example .env
+```
+
+### 4️⃣ Ejecutar migraciones
+Ejecuta las migraciones de TypeORM en tu entorno local:
+```bash
+npm run migration:local:run
+```
+
+Si necesitas revertirlas:
+```bash
+npm run migration:local:revert
+```
+
+### 5️⃣ Levantar el servidor
+```bash
+npm run start:dev
+```
+
+Por defecto estará disponible en:
+```
+http://localhost:3000
+```
+
+---
+
+
 ## 🐳 Levantar el proyecto con Docker y Docker Compose
 
 ### 1️⃣ Clonar el repositorio
@@ -169,7 +212,7 @@ Una vez que el contenedor esté corriendo:
 docker exec -it movies-api npm run migration:run
 ```
 
-> Esto aplicará todas las migraciones dentro de `src/migrations/` en la base de datos PostgreSQL definida en el `.env`.
+> Esto aplicará todas las migraciones dentro de `src/shared/infra/migrations` en la base de datos PostgreSQL definida en el `.env`.
 
 Si necesitas revertir una migración:
 
@@ -223,6 +266,9 @@ http://localhost:3000/docs
 | `POST`   | `/auth/login`            | Login en el sistema                                |
 | `POST`   | `/users/register`        | registro de usuarios normales en el sistema        |
 | `POST`   | `/users/register-admin`  | registro de usuarios administradores en el sistema |
+
+Adicional se adjunta una coleccion de postman con todo los metodos
+de la api en root del proyecto [postman-collection](https://github.com/LuisGuanangaGamarra/movies-api/blob/main/movies-swapi.postman_collection.json)
 
 ---
 

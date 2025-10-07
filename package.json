@@ -21,6 +21,7 @@
     "typeorm": "node ./node_modules/typeorm/cli.js -d dist/shared/infra/data-source.js",
     "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/shared/infra/data-source.ts",
     "migration:local:run": "npm run typeorm:local -- migration:run",
+    "migration:local:revert": "npm run typeorm:local -- migration:revert",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
     "migration:create": "npm run typeorm migration:create src/shared/infra/migrations/manual"
