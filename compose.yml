@@ -17,9 +17,9 @@ services:
     container_name: movies-db
     restart: on-failure:1
     environment:
-      POSTGRES_USER: nestuser
-      POSTGRES_PASSWORD: 561yem6X56sMfPCopwVwZh
-      POSTGRES_DB: movies-db
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      POSTGRES_DB:
     ports:
       - '5432:5432'
     networks:

@@ -1,98 +1,268 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🎬 movies-api — Clean Architecture con NestJS + PostgreSQL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 📖 Descripción general
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**movies-api** es un backend modular y escalable desarrollado con **NestJS**, siguiendo los principios de **Domain-Driven Design (DDD)**, **Clean Architecture** y **SOLID**.  
+Su objetivo principal es exponer una API RESTful para la gestión de películas (**Movies**) que puede integrarse con servicios externos como **SWAPI (Star Wars API)** y sincronizar información en una base de datos **PostgreSQL**.
 
-## Description
+La arquitectura está diseñada para mantener una alta cohesión y bajo acoplamiento, lo que facilita las pruebas unitarias, la evolución del sistema y su posible transición a microservicios.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## ⚙️ Tecnologías principales
 
-```bash
-$ npm install
+| Capa | Tecnología |
+|------|-------------|
+| Framework principal | [NestJS](https://nestjs.com/) |
+| ORM | [TypeORM](https://typeorm.io/) |
+| Base de datos | PostgreSQL |
+| Contenedores | Docker / Docker Compose |
+| Validaciones | class-validator / class-transformer |
+| Documentación | Swagger (OpenAPI) |
+| Arquitectura | Clean Architecture + DDD |
+| Testing | Jest (unit) |
+| Mapeo de datos | morphism |
+| Estilo de código | ESLint + Prettier |
+
+---
+
+## 🧱 Estructura del proyecto
+
+```
+movies-api/
+│
+├── src/
+│   ├── movies/                         # Contexto de dominio principal
+│   │   ├── application/                # Casos de uso (Use Cases)
+│   │   ├── domain/                     # Entidades y repositorios de dominio
+│   │   ├── infra/                      # Implementaciones concretas (TypeORM, mappers)
+│   │   └── presentation/               # Controladores, DTOs, validaciones
+│   │       
+│   ├── auth/                           # Contexto de dominio principal
+│   │   ├── application/                # Casos de uso (Use Cases)
+│   │   ├── domain/                     # Entidades y repositorios de dominio
+│   │   ├── infra/                      # Implementaciones concretas (TypeORM, mappers)
+│   │   └── presentation/               # Controladores, DTOs, validaciones
+│   │
+│   ├── users/                           # Contexto de dominio principal
+│   │   ├── application/                # Casos de uso (Use Cases)
+│   │   ├── domain/                     # Entidades y repositorios de dominio
+│   │   ├── infra/                      # Implementaciones concretas (TypeORM, mappers)
+│   │   └── presentation/               # Controladores, DTOs, validaciones
+│   │
+│   ├── shared/                         # Elementos comunes reutilizables
+│   │   ├── domain/                     # Excepciones y tipos compartidos
+│   │   ├── infra/                      # Filtros globales, logging, interceptores y data source
+│   │   └── presentation/               # Validadores y DTOs genéricos
+│   │
+│   ├── app.module.ts                   # Módulo raíz de la aplicación
+│   └── main.ts                         # Punto de entrada de NestJS
+│
+├── test/                               # Carpeta de pruebas
+│   ├── unit/                           # Tests unitarios
+│   |   |── mocks                       # Datos de pruebas 
+├── compose.yml                         # Orquestación de contenedores
+├── Dockerfile                          # Imagen multi-stage de la app
+├── .env.example                        # Variables de entorno base
+└── README.md
 ```
 
-## Compile and run the project
+---
+
+## 📋 Requisitos mínimos
+
+| Recurso | Versión mínima               |
+|----------|------------------------------|
+| Node.js | 22.x                         |
+| npm | 10.x                         |
+| Docker | 24.x                         |
+| Docker Compose | 2.x                          |
+| PostgreSQL | 15.x                         |
+| Sistema operativo | Linux / macOS / Windows WSL2 |
+
+---
+
+## 🔑 Variables de entorno (.env)
+
+Ejemplo de archivo `.env` necesario en la raíz del proyecto:
 
 ```bash
-# development
-$ npm run start
+# NestJS
+PORT=3000
+NODE_ENV=development
 
-# watch mode
-$ npm run start:dev
+# Database
+DB_HOST=tv.movies-api.com
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=postgres
+DB_NAME=movies_db
 
-# production mode
-$ npm run start:prod
+# Admin user Inicial
+USER_ADMIN=admin@localhost.com
+PASSWORD_ADMIN=admin123
+
+# JWT
+JWT_SECRET=mysecretkey
+JWT_EXPIRES=3600s
+JWT_ISSUER=movies-api
+JWT_AUDIENCE=movies-client
+CORS_ORIGIN=http://localhost:8080
+
+# External API
+SWAPI_BASE_URL=https://www.swapi.tech/api
 ```
 
-## Run tests
+> 💡 Copia este contenido en un archivo llamado `.env` antes de levantar los contenedores.
+
+---
+
+## 🐳 Levantar el proyecto con Docker y Docker Compose
+
+### 1️⃣ Clonar el repositorio
+```bash
+git clone https://github.com/LuisGuanangaGamarra/movies-api.git
+cd movies-api
+```
+
+### 2️⃣ Crear el archivo `.env`
+Copia el ejemplo y ajusta las credenciales:
+```bash
+cp .env.example .env
+```
+### 3️⃣ Ajustar variables de entorno DB en `compose.yml`
+```bash
+    environment:
+      POSTGRES_USER: <POSTGRES_USER>
+      POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
+      POSTGRES_DB: <POSTGRES_DB>
+```
+recordar que estos valores deben ser iguales a los del archivo `.env`
+
+### 4️⃣ Levantar los contenedores
+Ejecuta:
+```bash
+docker-compose up -d --build
+```
+
+Esto levantará:
+- `movies-api`: servidor NestJS (puerto 3000)
+- `postgres`: base de datos PostgreSQL (puerto 5432)
+
+Verifica que ambos estén corriendo:
+```bash
+docker ps
+```
+
+---
+
+## 🧩 Ejecutar migraciones de TypeORM
+
+de manera local se puede hacerlo con el comando 
+```bash
+npm run migration:local:run
+```
+
+Una vez que el contenedor esté corriendo:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker exec -it movies-api npm run migration:run
 ```
 
-## Deployment
+> Esto aplicará todas las migraciones dentro de `src/migrations/` en la base de datos PostgreSQL definida en el `.env`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Si necesitas revertir una migración:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker exec -it movies-api npm run migration:revert
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🧪 Ejecutar pruebas unitarias y coverage
 
-Check out a few resources that may come in handy when working with NestJS:
+Para correr los tests locales:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+npm run test
+```
 
-## Support
+Para generar reporte de cobertura:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm run test:cov
+```
 
-## Stay in touch
+Los reportes se guardan en:
+```
+coverage/unit/
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+## 📘 Documentación Swagger
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Una vez levantado el proyecto, puedes acceder a la documentación interactiva:
+
+```
+http://localhost:3000/docs
+```
+
+---
+
+## 🚀 Endpoints principales
+
+| Método   | Endpoint                 | Descripción                                        |
+|----------|--------------------------|----------------------------------------------------|
+| `GET`    | `/movies`                | Listar todas las películas                         |
+| `GET`    | `/movies?page=1&limit=5` | Lista y divide en paginas las películas            |
+| `POST`   | `/movies/sync`           | Sincroniza las películas desde la Star Wars API    |
+| `POST`   | `/movies`                | Crear una nueva película                           |
+| `PATCH`  | `/movies`                | Actualizar película existente                      |
+| `DELETE` | `/movies/:id`            | Eliminar una película                              |
+| `POST`   | `/auth/login`            | Login en el sistema                                |
+| `POST`   | `/users/register`        | registro de usuarios normales en el sistema        |
+| `POST`   | `/users/register-admin`  | registro de usuarios administradores en el sistema |
+
+---
+
+## 🧠 Arquitectura (Clean + DDD)
+
+El proyecto está dividido en capas **bien delimitadas**:
+
+| Capa | Responsabilidad |
+|------|------------------|
+| `domain/` | Contiene las entidades de dominio, interfaces y lógica pura de negocio |
+| `application/` | Orquesta casos de uso (use cases), sin depender de frameworks |
+| `infra/` | Implementaciones concretas (ORM, mappers, persistencia, integraciones externas) |
+| `presentation/` | Controladores, validaciones y DTOs expuestos a HTTP |
+| `shared/` | Excepciones, validadores, utilidades y filtros globales |
+
+---
+
+## 🧹 Comandos útiles
+
+| Acción | Comando |
+|--------|----------|
+| Iniciar en modo desarrollo | `npm run start:dev` |
+| Compilar a producción | `npm run build` |
+| Ejecutar la app compilada | `npm run start:prod` |
+| Ejecutar tests unitarios | `npm run test` |
+| Generar cobertura | `npm run test:cov` |
+| Crear migración nueva | `npm run migration:generate --name <nombre>` |
+
+---
+
+## 🧔 Autor
+
+**Luis Guananga Gamarra**  
+Full Stack Developer — NestJS / Vue / React / DDD / Clean Architecture  
+📧 [luisgamarra_97@hotmail.com](mailto:luisgamarra_97@hotmail.com)  
+🌐 [LinkedIn](https://www.linkedin.com/in/luis-virgilio-guananga-gamarra) · [GitHub](https://github.com/LuisGuanangaGamarra)
+
+---
+
+## 🧾 Licencia
+
+Este proyecto está licenciado bajo la **MIT License**.  
+Puedes usarlo, modificarlo y distribuirlo libremente citando al autor.

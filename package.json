@@ -19,6 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config jest-unit.ts --runInBand",
     "test:e2e": "jest --config ./test/e2e/jest-e2e.json",
     "typeorm": "node ./node_modules/typeorm/cli.js -d dist/shared/infra/data-source.js",
+    "typeorm:local": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/shared/infra/data-source.ts",
+    "migration:local:run": "npm run typeorm:local -- migration:run",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
     "migration:create": "npm run typeorm migration:create src/shared/infra/migrations/manual"
