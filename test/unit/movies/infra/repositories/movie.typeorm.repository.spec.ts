@@ -27,6 +27,7 @@ describe('MovieTypeOrmRepository', () => {
       delete: jest.fn(),
       create: jest.fn(),
       upsert: jest.fn(),
+      update: jest.fn(),
     } as DeepPartial<jest.Mocked<Repository<MovieOrmEntity>>> as jest.Mocked<
       Repository<MovieOrmEntity>
     >;
@@ -230,7 +231,7 @@ describe('MovieTypeOrmRepository', () => {
     mockMapper.toOrm.mockReturnValue(movieOrm);
     mockRepo.create.mockReturnValue(movieOrm);
     await mockMovieRepo.update(movieDomain);
-    expect(mockRepo.save).toHaveBeenCalledWith(movieOrm);
+    expect(mockRepo.update).toHaveBeenCalledWith(movieOrm.id, movieOrm);
     expect(mockMapper.toOrm).toHaveBeenCalled();
     expect(mockRepo.create).toHaveBeenCalled();
   });

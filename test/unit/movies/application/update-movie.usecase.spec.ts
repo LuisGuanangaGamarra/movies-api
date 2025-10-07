@@ -26,6 +26,7 @@ describe('UpdateMovieUsecase', () => {
           useValue: {
             findByTitleAndDifferentId: jest.fn(),
             update: jest.fn(),
+            findById: jest.fn(),
           },
         },
         {
@@ -47,6 +48,7 @@ describe('UpdateMovieUsecase', () => {
 
     moviesMapper.fromInputToDomain.mockReturnValue(domainMovie);
     movieRepository.findByTitleAndDifferentId.mockResolvedValue(null);
+    movieRepository.findById.mockResolvedValue(domainMovie);
 
     await updateMovieUsecase.execute(movieInputMockDto);
 
@@ -64,6 +66,7 @@ describe('UpdateMovieUsecase', () => {
     const domainMovie = { ...movieInputMockDto } as Movie;
 
     moviesMapper.fromInputToDomain.mockReturnValue(domainMovie);
+    movieRepository.findById.mockResolvedValue(domainMovie);
     movieRepository.findByTitleAndDifferentId.mockResolvedValue({
       ...domainMovie,
       id: 123,
