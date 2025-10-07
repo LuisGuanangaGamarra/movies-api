@@ -29,14 +29,14 @@ export class RegisterUserUseCase {
       });
 
     const rol = await this.roleRepository.findByName(role);
-    if (!role) throw new DomainException('ROLE_NOT_FOUND', 'rol no encontrado');
+    if (!rol) throw new DomainException('ROLE_NOT_FOUND', 'rol no encontrado');
 
     const hash = await bcrypt.hash(password, 12);
 
     const userToSave = {
       email,
       passwordHash: hash,
-      role: rol!,
+      role: rol,
     };
     await this.userRepository.save(userToSave);
   }
